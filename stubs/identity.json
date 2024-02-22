@@ -1,0 +1,252 @@
+[
+    {
+        "id": "de0d6f03-d068-4322-85aa-712c8cb58cad",
+        "schema_id": "default",
+        "schema_url": "https://kratosdev.bootlabstech.com/schemas/default",
+        "state": "active",
+        "state_changed_at": "2021-08-12T04:45:21.207404Z",
+        "traits": {
+            "email": "venkatvijay20017@gmail.com",
+            "last_name": "C S",
+            "first_name": "venkatesh"
+        },
+        "verifiable_addresses": [
+            {
+                "id": "3e1e3ce5-373a-4221-8295-48c701cc64dd",
+                "value": "venkatvijay20017@gmail.com",
+                "verified": false,
+                "via": "email",
+                "status": "pending",
+                "verified_at": null,
+                "created_at": "2021-08-12T04:45:21.20953Z",
+                "updated_at": "2021-08-12T04:45:21.20953Z"
+            }
+        ],
+        "recovery_addresses": [
+            {
+                "id": "7c74c8ca-679e-4773-9c30-09fb57481ddf",
+                "value": "venkatvijay20017@gmail.com",
+                "via": "email",
+                "created_at": "2021-08-12T04:45:21.210829Z",
+                "updated_at": "2021-08-12T04:45:21.210829Z"
+            }
+        ],
+        "created_at": "2021-08-12T04:45:21.208121Z",
+        "updated_at": "2021-08-12T04:45:21.208121Z"
+    },
+    {
+        "id": "c5ac53a1-742a-48d4-9773-c0df126a51b1",
+        "schema_id": "default",
+        "schema_url": "https://kratosdev.bootlabstech.com/schemas/default",
+        "state": "active",
+        "state_changed_at": "2021-08-10T14:45:47.968419Z",
+        "traits": {
+            "hd": "bootlabstech.com",
+            "email": "kristopher.sequeira@bootlabstech.com",
+            "last_name": "Sequeira",
+            "first_name": "Kristopher"
+        },
+        "verifiable_addresses": [
+            {
+                "id": "4d7b2e57-c7f4-4855-9967-be73458622a6",
+                "value": "kristopher.sequeira@bootlabstech.com",
+                "verified": false,
+                "via": "email",
+                "status": "pending",
+                "verified_at": null,
+                "created_at": "2021-08-10T14:45:47.970211Z",
+                "updated_at": "2021-08-10T14:45:47.970211Z"
+            }
+        ],
+        "recovery_addresses": [
+            {
+                "id": "2b321788-3e61-49fa-9e2c-3747aa637604",
+                "value": "kristopher.sequeira@bootlabstech.com",
+                "via": "email",
+                "created_at": "2021-08-10T14:45:47.97155Z",
+                "updated_at": "2021-08-10T14:45:47.97155Z"
+            }
+        ],
+        "created_at": "2021-08-10T14:45:47.969008Z",
+        "updated_at": "2021-08-10T14:45:47.969008Z"
+    },
+    {
+        "id": "811b07ce-e3d4-48e9-8cb5-d437baead6b4",
+        "schema_id": "default",
+        "schema_url": "https://kratosdev.bootlabstech.com/schemas/default",
+        "state": "active",
+        "state_changed_at": "2021-08-09T04:43:35.143676Z",
+        "traits": {
+            "hd": "bootlabstech.com",
+            "email": "venkatesh@bootlabstech.com",
+            "last_name": "C S",
+            "first_name": "Venkatesh"
+        },
+        "verifiable_addresses": [
+            {
+                "id": "d055a2e3-3dc6-4278-bf66-e867e57f4817",
+                "value": "venkatesh@bootlabstech.com",
+                "verified": false,
+                "via": "email",
+                "status": "pending",
+                "verified_at": null,
+                "created_at": "2021-08-09T04:43:35.145776Z",
+                "updated_at": "2021-08-09T04:43:35.145776Z"
+            }
+        ],
+        "recovery_addresses": [
+            {
+                "id": "88112bcd-068b-4f09-9d6a-8cb99474fa0e",
+                "value": "venkatesh@bootlabstech.com",
+                "via": "email",
+                "created_at": "2021-08-09T04:43:35.147055Z",
+                "updated_at": "2021-08-09T04:43:35.147055Z"
+            }
+        ],
+        "created_at": "2021-08-09T04:43:35.144301Z",
+        "updated_at": "2021-08-09T04:43:35.144301Z"
+    },
+    {
+        "id": "7f3d67a0-6f86-40b6-b03a-f2e0f94fd64c",
+        "schema_id": "default",
+        "schema_url": "https://kratosdev.bootlabstech.com/schemas/default",
+        "state": "active",
+        "state_changed_at": "2021-08-09T11:57:56.33245Z",
+        "traits": {
+            "hd": "bootlabstech.com",
+            "email": "naveenkumar.k@bootlabstech.com",
+            "last_name": "Karthigayan",
+            "first_name": "Naveenkumar"
+        },
+        "verifiable_addresses": [
+            {
+                "id": "7d8cd68d-7af9-4463-a77c-67e290c4d146",
+                "value": "naveenkumar.k@bootlabstech.com",
+                "verified": false,
+                "via": "email",
+                "status": "pending",
+                "verified_at": null,
+                "created_at": "2021-08-09T11:57:56.334305Z",
+                "updated_at": "2021-08-09T11:57:56.334305Z"
+            }
+        ],
+        "recovery_addresses": [
+            {
+                "id": "063293c7-9094-4e5d-8525-640750e193a5",
+                "value": "naveenkumar.k@bootlabstech.com",
+                "via": "email",
+                "created_at": "2021-08-09T11:57:56.335456Z",
+                "updated_at": "2021-08-09T11:57:56.335456Z"
+            }
+        ],
+        "created_at": "2021-08-09T11:57:56.333072Z",
+        "updated_at": "2021-08-09T11:57:56.333072Z"
+    },
+    {
+        "id": "717a75bb-5c6b-4eeb-9616-4089cf50c9f5",
+        "schema_id": "default",
+        "schema_url": "https://kratosdev.bootlabstech.com/schemas/default",
+        "state": "active",
+        "state_changed_at": "2021-08-17T13:41:17.598437Z",
+        "traits": {
+            "email": "aravindrckumar@gmail.com",
+            "last_name": "R C",
+            "first_name": "Aravinda Kumar"
+        },
+        "verifiable_addresses": [
+            {
+                "id": "8c0294d4-05f9-4f15-8c91-c818bf74b10a",
+                "value": "aravindrckumar@gmail.com",
+                "verified": false,
+                "via": "email",
+                "status": "pending",
+                "verified_at": null,
+                "created_at": "2021-08-17T13:41:17.600505Z",
+                "updated_at": "2021-08-17T13:41:17.600505Z"
+            }
+        ],
+        "recovery_addresses": [
+            {
+                "id": "e1bac678-78df-4fc0-91a0-d7f4f2cc3694",
+                "value": "aravindrckumar@gmail.com",
+                "via": "email",
+                "created_at": "2021-08-17T13:41:17.601975Z",
+                "updated_at": "2021-08-17T13:41:17.601975Z"
+            }
+        ],
+        "created_at": "2021-08-17T13:41:17.59915Z",
+        "updated_at": "2021-08-17T13:41:17.59915Z"
+    },
+    {
+        "id": "58747aa6-f569-44ca-a548-eaeed04ea1b3",
+        "schema_id": "default",
+        "schema_url": "https://kratosdev.bootlabstech.com/schemas/default",
+        "state": "active",
+        "state_changed_at": "2021-08-08T20:24:01.229089Z",
+        "traits": {
+            "hd": "bootlabstech.com",
+            "email": "aravind.kumar@bootlabstech.com",
+            "last_name": "Kumar",
+            "first_name": "Aravinda"
+        },
+        "verifiable_addresses": [
+            {
+                "id": "503d1194-65a2-4d67-9581-4d764df88c17",
+                "value": "aravind.kumar@bootlabstech.com",
+                "verified": false,
+                "via": "email",
+                "status": "pending",
+                "verified_at": null,
+                "created_at": "2021-08-08T20:24:01.232749Z",
+                "updated_at": "2021-08-08T20:24:01.232749Z"
+            }
+        ],
+        "recovery_addresses": [
+            {
+                "id": "8f77e29d-43a2-4ced-92d5-93568131c669",
+                "value": "aravind.kumar@bootlabstech.com",
+                "via": "email",
+                "created_at": "2021-08-08T20:24:01.23677Z",
+                "updated_at": "2021-08-08T20:24:01.23677Z"
+            }
+        ],
+        "created_at": "2021-08-08T20:24:01.229839Z",
+        "updated_at": "2021-08-08T20:24:01.229839Z"
+    },
+    {
+        "id": "03f25d7f-d021-4f76-ae7a-881a857da2b7",
+        "schema_id": "default",
+        "schema_url": "https://kratosdev.bootlabstech.com/schemas/default",
+        "state": "active",
+        "state_changed_at": "2021-08-09T04:43:04.17056Z",
+        "traits": {
+            "hd": "bootlabstech.com",
+            "email": "ramkumar@bootlabstech.com",
+            "last_name": "Sambasivan",
+            "first_name": "Ramkumar"
+        },
+        "verifiable_addresses": [
+            {
+                "id": "9e262905-d8c3-402c-a1e9-299badb45760",
+                "value": "ramkumar@bootlabstech.com",
+                "verified": false,
+                "via": "email",
+                "status": "pending",
+                "verified_at": null,
+                "created_at": "2021-08-09T04:43:04.172863Z",
+                "updated_at": "2021-08-09T04:43:04.172863Z"
+            }
+        ],
+        "recovery_addresses": [
+            {
+                "id": "4221d39a-e5c1-426b-99c9-8e84c78200bf",
+                "value": "ramkumar@bootlabstech.com",
+                "via": "email",
+                "created_at": "2021-08-09T04:43:04.174768Z",
+                "updated_at": "2021-08-09T04:43:04.174768Z"
+            }
+        ],
+        "created_at": "2021-08-09T04:43:04.171234Z",
+        "updated_at": "2021-08-09T04:43:04.171234Z"
+    }
+]

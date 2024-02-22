@@ -1,0 +1,1377 @@
+{
+  "id": "terraform-google-modules/vm/google/7.2.0",
+  "owner": "aaron-lane",
+  "namespace": "terraform-google-modules",
+  "name": "vm",
+  "version": "7.2.0",
+  "provider": "google",
+  "provider_logo_url": "/images/providers/google-cloud.svg",
+  "description": "This is a collection of opinionated submodules that can be used to provision VMs in GCP.",
+  "source": "https://github.com/terraform-google-modules/terraform-google-vm",
+  "tag": "v7.2.0",
+  "published_at": "2021-10-27T18:00:28.105099Z",
+  "downloads": 537777,
+  "verified": false,
+  "root": {
+    "path": "",
+    "name": "vm",
+    "readme": "# terraform-google-vm\n\nThis is a collection of opinionated submodules that can be used as building blocks to provision VMs in GCP:\n\n* [Instance template](modules/instance_template)\n* [Managed instance group](modules/mig)\n* [Unmanaged instance group](modules/umig)\n\n## Compatibility\nThis module is meant for use with Terraform 0.13+ and tested using Terraform 1.0+. If you find incompatibilities using Terraform >=0.13, please open an issue.\n If you haven't\n[upgraded](https://www.terraform.io/upgrade-guides/0-13.html) and need a Terraform\n0.12.x-compatible version of this module, the last released version\nintended for Terraform 0.12.x is [v5.1.0](https://registry.terraform.io/modules/terraform-google-modules/-vm/google/v5.1.0).\n\n## Examples\n\nExamples of how to use these modules can be found in the [examples](examples) folder.\n\n## Project APIs\n\nThe following APIs must be enabled on your project:\n- `compute.googleapis.com`\n- `iam.googleapis.com`\n\nSee also the [project_services](modules/project_services) module (optional).\n\n## Notes\n\n`distribution_policy_zones` cannot be changed during use.\nIf you have changed them yourself or used to have a default value, then you'll have to force recreate a MIG group yourself.\n\n## Tests\n\nFor running the integration test cases, please refer to the [CONTRIBUTING](CONTRIBUTING.md) documentation.\n\n## Permissions\n\nThe service account used to execute tests for this module should have the following roles:\n- [`roles/compute.admin`](https://cloud.google.com/iam/docs/understanding-roles#compute-engine-roles)\n- [`roles/iam.serviceAccountUser`](https://cloud.google.com/iam/docs/understanding-roles#service-accounts-roles)\n",
+    "empty": true,
+    "inputs": [],
+    "outputs": [],
+    "dependencies": [],
+    "provider_dependencies": [],
+    "resources": []
+  },
+  "submodules": [
+    {
+      "path": "modules/mig",
+      "name": "mig",
+      "readme": "# Managed Instance Group (MIG)\n\nThis module is used to create a [google_compute_region_instance_group_manager](https://www.terraform.io/docs/providers/google/r/compute_region_instance_group_manager.html),\nand optionally, an autoscaler and healthchecks.\n\n## Usage\n\nSee the [simple example](../../examples/mig/simple) for a usage example.\n\n## Upgrading\n\nThe current version is 2.X. The following guides are available to assist with upgrades:\n\n- [1.X -> 2.0](../../docs/upgrading_to_mig_v2.0.md)\n\n<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n## Inputs\n\n| Name | Description | Type | Default | Required |\n|------|-------------|------|---------|:--------:|\n| autoscaler\\_name | Autoscaler name. When variable is empty, name will be derived from var.hostname. | `string` | `\"\"` | no |\n| autoscaling\\_cpu | Autoscaling, cpu utilization policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#cpu_utilization | `list(map(number))` | `[]` | no |\n| autoscaling\\_enabled | Creates an autoscaler for the managed instance group | `string` | `\"false\"` | no |\n| autoscaling\\_lb | Autoscaling, load balancing utilization policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#load_balancing_utilization | `list(map(number))` | `[]` | no |\n| autoscaling\\_metric | Autoscaling, metric policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#metric | <pre>list(object({<br>    name   = string<br>    target = number<br>    type   = string<br>  }))</pre> | `[]` | no |\n| autoscaling\\_scale\\_in\\_control | Autoscaling, scale-in control block. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#scale_in_control | <pre>object({<br>    fixed_replicas   = number<br>    percent_replicas = number<br>    time_window_sec  = number<br>  })</pre> | <pre>{<br>  \"fixed_replicas\": null,<br>  \"percent_replicas\": null,<br>  \"time_window_sec\": null<br>}</pre> | no |\n| cooldown\\_period | The number of seconds that the autoscaler should wait before it starts collecting information from a new instance. | `number` | `60` | no |\n| distribution\\_policy\\_zones | The distribution policy, i.e. which zone(s) should instances be create in. Default is all zones in given region. | `list(string)` | `[]` | no |\n| health\\_check | Health check to determine whether instances are responsive and able to do work | <pre>object({<br>    type                = string<br>    initial_delay_sec   = number<br>    check_interval_sec  = number<br>    healthy_threshold   = number<br>    timeout_sec         = number<br>    unhealthy_threshold = number<br>    response            = string<br>    proxy_header        = string<br>    port                = number<br>    request             = string<br>    request_path        = string<br>    host                = string<br>  })</pre> | <pre>{<br>  \"check_interval_sec\": 30,<br>  \"healthy_threshold\": 1,<br>  \"host\": \"\",<br>  \"initial_delay_sec\": 30,<br>  \"port\": 80,<br>  \"proxy_header\": \"NONE\",<br>  \"request\": \"\",<br>  \"request_path\": \"/\",<br>  \"response\": \"\",<br>  \"timeout_sec\": 10,<br>  \"type\": \"\",<br>  \"unhealthy_threshold\": 5<br>}</pre> | no |\n| health\\_check\\_name | Health check name. When variable is empty, name will be derived from var.hostname. | `string` | `\"\"` | no |\n| hostname | Hostname prefix for instances | `string` | `\"default\"` | no |\n| instance\\_template | Instance template self\\_link used to create compute instances | `any` | n/a | yes |\n| max\\_replicas | The maximum number of instances that the autoscaler can scale up to. This is required when creating or updating an autoscaler. The maximum number of replicas should not be lower than minimal number of replicas. | `number` | `10` | no |\n| mig\\_name | Managed instance group name. When variable is empty, name will be derived from var.hostname. | `string` | `\"\"` | no |\n| mig\\_timeouts | Times for creation, deleting and updating the MIG resources. Can be helpful when using wait\\_for\\_instances to allow a longer VM startup time. | <pre>object({<br>    create = string<br>    update = string<br>    delete = string<br>  })</pre> | <pre>{<br>  \"create\": \"5m\",<br>  \"delete\": \"15m\",<br>  \"update\": \"5m\"<br>}</pre> | no |\n| min\\_replicas | The minimum number of replicas that the autoscaler can scale down to. This cannot be less than 0. | `number` | `2` | no |\n| named\\_ports | Named name and named port. https://cloud.google.com/load-balancing/docs/backend-service#named_ports | <pre>list(object({<br>    name = string<br>    port = number<br>  }))</pre> | `[]` | no |\n| network | Network to deploy to. Only one of network or subnetwork should be specified. | `string` | `\"\"` | no |\n| project\\_id | The GCP project ID | `string` | `null` | no |\n| region | The GCP region where the managed instance group resides. | `any` | n/a | yes |\n| stateful\\_disks | Disks created on the instances that will be preserved on instance delete. https://cloud.google.com/compute/docs/instance-groups/configuring-stateful-disks-in-migs | <pre>list(object({<br>    device_name = string<br>    delete_rule = string<br>  }))</pre> | `[]` | no |\n| subnetwork | Subnet to deploy to. Only one of network or subnetwork should be specified. | `string` | `\"\"` | no |\n| subnetwork\\_project | The project that subnetwork belongs to | `string` | `\"\"` | no |\n| target\\_pools | The target load balancing pools to assign this group to. | `list(string)` | `[]` | no |\n| target\\_size | The target number of running instances for this managed instance group. This value should always be explicitly set unless this resource is attached to an autoscaler, in which case it should never be set. | `number` | `1` | no |\n| update\\_policy | The rolling update policy. https://www.terraform.io/docs/providers/google/r/compute_region_instance_group_manager.html#rolling_update_policy | <pre>list(object({<br>    max_surge_fixed              = number<br>    instance_redistribution_type = string<br>    max_surge_percent            = number<br>    max_unavailable_fixed        = number<br>    max_unavailable_percent      = number<br>    min_ready_sec                = number<br>    replacement_method           = string<br>    minimal_action               = string<br>    type                         = string<br>  }))</pre> | `[]` | no |\n| wait\\_for\\_instances | Whether to wait for all instances to be created/updated before returning. Note that if this is set to true and the operation does not succeed, Terraform will continue trying until it times out. | `string` | `\"false\"` | no |\n\n## Outputs\n\n| Name | Description |\n|------|-------------|\n| health\\_check\\_self\\_links | All self\\_links of healthchecks created for the instance group. |\n| instance\\_group | Instance-group url of managed instance group |\n| instance\\_group\\_manager | An instance of google\\_compute\\_region\\_instance\\_group\\_manager of the instance group. |\n| self\\_link | Self-link of managed instance group |\n\n<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n",
+      "empty": false,
+      "inputs": [
+        {
+          "name": "project_id",
+          "type": "string",
+          "description": "The GCP project ID",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "instance_template",
+          "type": "string",
+          "description": "Instance template self_link used to create compute instances",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "autoscaling_cpu",
+          "type": "list(map(number))",
+          "description": "Autoscaling, cpu utilization policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#cpu_utilization",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "subnetwork",
+          "type": "string",
+          "description": "Subnet to deploy to. Only one of network or subnetwork should be specified.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "target_pools",
+          "type": "list(string)",
+          "description": "The target load balancing pools to assign this group to.",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "distribution_policy_zones",
+          "type": "list(string)",
+          "description": "The distribution policy, i.e. which zone(s) should instances be create in. Default is all zones in given region.",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "health_check",
+          "type": "object({\n    type                = string\n    initial_delay_sec   = number\n    check_interval_sec  = number\n    healthy_threshold   = number\n    timeout_sec         = number\n    unhealthy_threshold = number\n    response            = string\n    proxy_header        = string\n    port                = number\n    request             = string\n    request_path        = string\n    host                = string\n  })",
+          "description": "Health check to determine whether instances are responsive and able to do work",
+          "default": "{\n  \"check_interval_sec\": 30,\n  \"healthy_threshold\": 1,\n  \"host\": \"\",\n  \"initial_delay_sec\": 30,\n  \"port\": 80,\n  \"proxy_header\": \"NONE\",\n  \"request\": \"\",\n  \"request_path\": \"/\",\n  \"response\": \"\",\n  \"timeout_sec\": 10,\n  \"type\": \"\",\n  \"unhealthy_threshold\": 5\n}",
+          "required": false
+        },
+        {
+          "name": "subnetwork_project",
+          "type": "string",
+          "description": "The project that subnetwork belongs to",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "target_size",
+          "type": "string",
+          "description": "The target number of running instances for this managed instance group. This value should always be explicitly set unless this resource is attached to an autoscaler, in which case it should never be set.",
+          "default": "1",
+          "required": false
+        },
+        {
+          "name": "update_policy",
+          "type": "list(object({\n    max_surge_fixed              = number\n    instance_redistribution_type = string\n    max_surge_percent            = number\n    max_unavailable_fixed        = number\n    max_unavailable_percent      = number\n    min_ready_sec                = number\n    replacement_method           = string\n    minimal_action               = string\n    type                         = string\n  }))",
+          "description": "The rolling update policy. https://www.terraform.io/docs/providers/google/r/compute_region_instance_group_manager.html#rolling_update_policy",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "autoscaler_name",
+          "type": "string",
+          "description": "Autoscaler name. When variable is empty, name will be derived from var.hostname.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "hostname",
+          "type": "string",
+          "description": "Hostname prefix for instances",
+          "default": "\"default\"",
+          "required": false
+        },
+        {
+          "name": "mig_name",
+          "type": "string",
+          "description": "Managed instance group name. When variable is empty, name will be derived from var.hostname.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "stateful_disks",
+          "type": "list(object({\n    device_name = string\n    delete_rule = string\n  }))",
+          "description": "Disks created on the instances that will be preserved on instance delete. https://cloud.google.com/compute/docs/instance-groups/configuring-stateful-disks-in-migs",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "autoscaling_enabled",
+          "type": "string",
+          "description": "Creates an autoscaler for the managed instance group",
+          "default": "\"false\"",
+          "required": false
+        },
+        {
+          "name": "min_replicas",
+          "type": "string",
+          "description": "The minimum number of replicas that the autoscaler can scale down to. This cannot be less than 0.",
+          "default": "2",
+          "required": false
+        },
+        {
+          "name": "autoscaling_metric",
+          "type": "list(object({\n    name   = string\n    target = number\n    type   = string\n  }))",
+          "description": "Autoscaling, metric policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#metric",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "autoscaling_scale_in_control",
+          "type": "object({\n    fixed_replicas   = number\n    percent_replicas = number\n    time_window_sec  = number\n  })",
+          "description": "Autoscaling, scale-in control block. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#scale_in_control",
+          "default": "{\n  \"fixed_replicas\": null,\n  \"percent_replicas\": null,\n  \"time_window_sec\": null\n}",
+          "required": false
+        },
+        {
+          "name": "region",
+          "type": "string",
+          "description": "The GCP region where the managed instance group resides.",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "max_replicas",
+          "type": "string",
+          "description": "The maximum number of instances that the autoscaler can scale up to. This is required when creating or updating an autoscaler. The maximum number of replicas should not be lower than minimal number of replicas.",
+          "default": "10",
+          "required": false
+        },
+        {
+          "name": "wait_for_instances",
+          "type": "string",
+          "description": "Whether to wait for all instances to be created/updated before returning. Note that if this is set to true and the operation does not succeed, Terraform will continue trying until it times out.",
+          "default": "\"false\"",
+          "required": false
+        },
+        {
+          "name": "network",
+          "type": "string",
+          "description": "Network to deploy to. Only one of network or subnetwork should be specified.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "named_ports",
+          "type": "list(object({\n    name = string\n    port = number\n  }))",
+          "description": "Named name and named port. https://cloud.google.com/load-balancing/docs/backend-service#named_ports",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "health_check_name",
+          "type": "string",
+          "description": "Health check name. When variable is empty, name will be derived from var.hostname.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "autoscaling_lb",
+          "type": "list(map(number))",
+          "description": "Autoscaling, load balancing utilization policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#load_balancing_utilization",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "cooldown_period",
+          "type": "string",
+          "description": "The number of seconds that the autoscaler should wait before it starts collecting information from a new instance.",
+          "default": "60",
+          "required": false
+        },
+        {
+          "name": "mig_timeouts",
+          "type": "object({\n    create = string\n    update = string\n    delete = string\n  })",
+          "description": "Times for creation, deleting and updating the MIG resources. Can be helpful when using wait_for_instances to allow a longer VM startup time. ",
+          "default": "{\n  \"create\": \"5m\",\n  \"delete\": \"15m\",\n  \"update\": \"5m\"\n}",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "name": "self_link",
+          "description": "Self-link of managed instance group"
+        },
+        {
+          "name": "instance_group",
+          "description": "Instance-group url of managed instance group"
+        },
+        {
+          "name": "instance_group_manager",
+          "description": "An instance of google_compute_region_instance_group_manager of the instance group."
+        },
+        {
+          "name": "health_check_self_links",
+          "description": "All self_links of healthchecks created for the instance group."
+        }
+      ],
+      "dependencies": [],
+      "provider_dependencies": [
+        {
+          "name": "google",
+          "namespace": "",
+          "source": "",
+          "version": ">= 3.43, <4.0"
+        },
+        {
+          "name": "google-beta",
+          "namespace": "",
+          "source": "",
+          "version": ">= 3.43, <4.0"
+        }
+      ],
+      "resources": [
+        {
+          "name": "http",
+          "type": "google_compute_health_check"
+        },
+        {
+          "name": "tcp",
+          "type": "google_compute_health_check"
+        },
+        {
+          "name": "mig",
+          "type": "google_compute_region_instance_group_manager"
+        },
+        {
+          "name": "autoscaler",
+          "type": "google_compute_region_autoscaler"
+        },
+        {
+          "name": "https",
+          "type": "google_compute_health_check"
+        }
+      ]
+    },
+    {
+      "path": "modules/instance_template",
+      "name": "instance_template",
+      "readme": "# instance_template\n\nThis submodule allows you to create a `google_compute_instance_template`\nresource, which is used as the basis for the other instance, managed, and\nunmanaged instance groups submodules.\n\n## Usage\n\nSee the [simple](../../examples/instance_template/simple) for a usage example.\n\n<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n## Inputs\n\n| Name | Description | Type | Default | Required |\n|------|-------------|------|---------|:--------:|\n| access\\_config | Access configurations, i.e. IPs via which the VM instance can be accessed via the Internet. | <pre>list(object({<br>    nat_ip       = string<br>    network_tier = string<br>  }))</pre> | `[]` | no |\n| additional\\_disks | List of maps of additional disks. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#disk_name | <pre>list(object({<br>    disk_name    = string<br>    device_name  = string<br>    auto_delete  = bool<br>    boot         = bool<br>    disk_size_gb = number<br>    disk_type    = string<br>    disk_labels  = map(string)<br>  }))</pre> | `[]` | no |\n| additional\\_networks | Additional network interface details for GCE, if any. | <pre>list(object({<br>    network            = string<br>    subnetwork         = string<br>    subnetwork_project = string<br>    network_ip         = string<br>    access_config = list(object({<br>      nat_ip       = string<br>      network_tier = string<br>    }))<br>  }))</pre> | `[]` | no |\n| alias\\_ip\\_range | An array of alias IP ranges for this network interface. Can only be specified for network interfaces on subnet-mode networks.<br>ip\\_cidr\\_range: The IP CIDR range represented by this alias IP range. This IP CIDR range must belong to the specified subnetwork and cannot contain IP addresses reserved by system or used by other network interfaces. At the time of writing only a netmask (e.g. /24) may be supplied, with a CIDR format resulting in an API error.<br>subnetwork\\_range\\_name: The subnetwork secondary range name specifying the secondary range from which to allocate the IP CIDR range for this alias IP range. If left unspecified, the primary range of the subnetwork will be used. | <pre>object({<br>    ip_cidr_range         = string<br>    subnetwork_range_name = string<br>  })</pre> | `null` | no |\n| auto\\_delete | Whether or not the boot disk should be auto-deleted | `string` | `\"true\"` | no |\n| can\\_ip\\_forward | Enable IP forwarding, for NAT instances for example | `string` | `\"false\"` | no |\n| disk\\_encryption\\_key | The self link of the encryption key that is stored in Google Cloud KMS to use to encrypt all the disks on this instance | `string` | `null` | no |\n| disk\\_labels | Labels to be assigned to boot disk, provided as a map | `map(string)` | `{}` | no |\n| disk\\_size\\_gb | Boot disk size in GB | `string` | `\"100\"` | no |\n| disk\\_type | Boot disk type, can be either pd-ssd, local-ssd, or pd-standard | `string` | `\"pd-standard\"` | no |\n| enable\\_confidential\\_vm | Whether to enable the Confidential VM configuration on the instance. Note that the instance image must support Confidential VMs. See https://cloud.google.com/compute/docs/images | `bool` | `false` | no |\n| enable\\_shielded\\_vm | Whether to enable the Shielded VM configuration on the instance. Note that the instance image must support Shielded VMs. See https://cloud.google.com/compute/docs/images | `bool` | `false` | no |\n| gpu | GPU information. Type and count of GPU to attach to the instance template. See https://cloud.google.com/compute/docs/gpus more details | <pre>object({<br>    type  = string<br>    count = number<br>  })</pre> | `null` | no |\n| labels | Labels, provided as a map | `map(string)` | `{}` | no |\n| machine\\_type | Machine type to create, e.g. n1-standard-1 | `string` | `\"n1-standard-1\"` | no |\n| metadata | Metadata, provided as a map | `map(string)` | `{}` | no |\n| min\\_cpu\\_platform | Specifies a minimum CPU platform. Applicable values are the friendly names of CPU platforms, such as Intel Haswell or Intel Skylake. See the complete list: https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform | `string` | `null` | no |\n| name\\_prefix | Name prefix for the instance template | `string` | `\"default-instance-template\"` | no |\n| network | The name or self\\_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks. | `string` | `\"\"` | no |\n| network\\_ip | Private IP address to assign to the instance if desired. | `string` | `\"\"` | no |\n| on\\_host\\_maintenance | Instance availability Policy | `string` | `\"MIGRATE\"` | no |\n| preemptible | Allow the instance to be preempted | `bool` | `false` | no |\n| project\\_id | The GCP project ID | `string` | `null` | no |\n| region | Region where the instance template should be created. | `string` | `null` | no |\n| service\\_account | Service account to attach to the instance. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#service_account. | <pre>object({<br>    email  = string<br>    scopes = set(string)<br>  })</pre> | n/a | yes |\n| shielded\\_instance\\_config | Not used unless enable\\_shielded\\_vm is true. Shielded VM configuration for the instance. | <pre>object({<br>    enable_secure_boot          = bool<br>    enable_vtpm                 = bool<br>    enable_integrity_monitoring = bool<br>  })</pre> | <pre>{<br>  \"enable_integrity_monitoring\": true,<br>  \"enable_secure_boot\": true,<br>  \"enable_vtpm\": true<br>}</pre> | no |\n| source\\_image | Source disk image. If neither source\\_image nor source\\_image\\_family is specified, defaults to the latest public CentOS image. | `string` | `\"\"` | no |\n| source\\_image\\_family | Source image family. If neither source\\_image nor source\\_image\\_family is specified, defaults to the latest public CentOS image. | `string` | `\"centos-7\"` | no |\n| source\\_image\\_project | Project where the source image comes from. The default project contains CentOS images. | `string` | `\"centos-cloud\"` | no |\n| startup\\_script | User startup script to run when instances spin up | `string` | `\"\"` | no |\n| subnetwork | The name of the subnetwork to attach this interface to. The subnetwork must exist in the same region this instance will be created in. Either network or subnetwork must be provided. | `string` | `\"\"` | no |\n| subnetwork\\_project | The ID of the project in which the subnetwork belongs. If it is not provided, the provider project is used. | `string` | `\"\"` | no |\n| tags | Network tags, provided as a list | `list(string)` | `[]` | no |\n\n## Outputs\n\n| Name | Description |\n|------|-------------|\n| name | Name of instance template |\n| self\\_link | Self-link of instance template |\n| tags | Tags that will be associated with instance(s) |\n\n<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n",
+      "empty": false,
+      "inputs": [
+        {
+          "name": "labels",
+          "type": "map(string)",
+          "description": "Labels, provided as a map",
+          "default": "{}",
+          "required": false
+        },
+        {
+          "name": "disk_size_gb",
+          "type": "string",
+          "description": "Boot disk size in GB",
+          "default": "\"100\"",
+          "required": false
+        },
+        {
+          "name": "disk_type",
+          "type": "string",
+          "description": "Boot disk type, can be either pd-ssd, local-ssd, or pd-standard",
+          "default": "\"pd-standard\"",
+          "required": false
+        },
+        {
+          "name": "additional_disks",
+          "type": "list(object({\n    disk_name    = string\n    device_name  = string\n    auto_delete  = bool\n    boot         = bool\n    disk_size_gb = number\n    disk_type    = string\n    disk_labels  = map(string)\n  }))",
+          "description": "List of maps of additional disks. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#disk_name",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "access_config",
+          "type": "list(object({\n    nat_ip       = string\n    network_tier = string\n  }))",
+          "description": "Access configurations, i.e. IPs via which the VM instance can be accessed via the Internet.",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "project_id",
+          "type": "string",
+          "description": "The GCP project ID",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "min_cpu_platform",
+          "type": "string",
+          "description": "Specifies a minimum CPU platform. Applicable values are the friendly names of CPU platforms, such as Intel Haswell or Intel Skylake. See the complete list: https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "startup_script",
+          "type": "string",
+          "description": "User startup script to run when instances spin up",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "gpu",
+          "type": "object({\n    type  = string\n    count = number\n  })",
+          "description": "GPU information. Type and count of GPU to attach to the instance template. See https://cloud.google.com/compute/docs/gpus more details",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "preemptible",
+          "type": "bool",
+          "description": "Allow the instance to be preempted",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "network_ip",
+          "type": "string",
+          "description": "Private IP address to assign to the instance if desired.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "additional_networks",
+          "type": "list(object({\n    network            = string\n    subnetwork         = string\n    subnetwork_project = string\n    network_ip         = string\n    access_config = list(object({\n      nat_ip       = string\n      network_tier = string\n    }))\n  }))",
+          "description": "Additional network interface details for GCE, if any.",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "service_account",
+          "type": "object({\n    email  = string\n    scopes = set(string)\n  })",
+          "description": "Service account to attach to the instance. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#service_account.",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "name_prefix",
+          "type": "string",
+          "description": "Name prefix for the instance template",
+          "default": "\"default-instance-template\"",
+          "required": false
+        },
+        {
+          "name": "tags",
+          "type": "list(string)",
+          "description": "Network tags, provided as a list",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "source_image_project",
+          "type": "string",
+          "description": "Project where the source image comes from. The default project contains CentOS images.",
+          "default": "\"centos-cloud\"",
+          "required": false
+        },
+        {
+          "name": "can_ip_forward",
+          "type": "string",
+          "description": "Enable IP forwarding, for NAT instances for example",
+          "default": "\"false\"",
+          "required": false
+        },
+        {
+          "name": "source_image",
+          "type": "string",
+          "description": "Source disk image. If neither source_image nor source_image_family is specified, defaults to the latest public CentOS image.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "machine_type",
+          "type": "string",
+          "description": "Machine type to create, e.g. n1-standard-1",
+          "default": "\"n1-standard-1\"",
+          "required": false
+        },
+        {
+          "name": "disk_encryption_key",
+          "type": "string",
+          "description": "The self link of the encryption key that is stored in Google Cloud KMS to use to encrypt all the disks on this instance",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "disk_labels",
+          "type": "map(string)",
+          "description": "Labels to be assigned to boot disk, provided as a map",
+          "default": "{}",
+          "required": false
+        },
+        {
+          "name": "subnetwork",
+          "type": "string",
+          "description": "The name of the subnetwork to attach this interface to. The subnetwork must exist in the same region this instance will be created in. Either network or subnetwork must be provided.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "metadata",
+          "type": "map(string)",
+          "description": "Metadata, provided as a map",
+          "default": "{}",
+          "required": false
+        },
+        {
+          "name": "alias_ip_range",
+          "type": "object({\n    ip_cidr_range         = string\n    subnetwork_range_name = string\n  })",
+          "description": "An array of alias IP ranges for this network interface. Can only be specified for network interfaces on subnet-mode networks.\nip_cidr_range: The IP CIDR range represented by this alias IP range. This IP CIDR range must belong to the specified subnetwork and cannot contain IP addresses reserved by system or used by other network interfaces. At the time of writing only a netmask (e.g. /24) may be supplied, with a CIDR format resulting in an API error.\nsubnetwork_range_name: The subnetwork secondary range name specifying the secondary range from which to allocate the IP CIDR range for this alias IP range. If left unspecified, the primary range of the subnetwork will be used.\n",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "on_host_maintenance",
+          "type": "string",
+          "description": "Instance availability Policy",
+          "default": "\"MIGRATE\"",
+          "required": false
+        },
+        {
+          "name": "region",
+          "type": "string",
+          "description": "Region where the instance template should be created.",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "enable_shielded_vm",
+          "type": "string",
+          "description": "Whether to enable the Shielded VM configuration on the instance. Note that the instance image must support Shielded VMs. See https://cloud.google.com/compute/docs/images",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "shielded_instance_config",
+          "type": "object({\n    enable_secure_boot          = bool\n    enable_vtpm                 = bool\n    enable_integrity_monitoring = bool\n  })",
+          "description": "Not used unless enable_shielded_vm is true. Shielded VM configuration for the instance.",
+          "default": "{\n  \"enable_integrity_monitoring\": true,\n  \"enable_secure_boot\": true,\n  \"enable_vtpm\": true\n}",
+          "required": false
+        },
+        {
+          "name": "source_image_family",
+          "type": "string",
+          "description": "Source image family. If neither source_image nor source_image_family is specified, defaults to the latest public CentOS image.",
+          "default": "\"centos-7\"",
+          "required": false
+        },
+        {
+          "name": "auto_delete",
+          "type": "string",
+          "description": "Whether or not the boot disk should be auto-deleted",
+          "default": "\"true\"",
+          "required": false
+        },
+        {
+          "name": "enable_confidential_vm",
+          "type": "string",
+          "description": "Whether to enable the Confidential VM configuration on the instance. Note that the instance image must support Confidential VMs. See https://cloud.google.com/compute/docs/images",
+          "default": "false",
+          "required": false
+        },
+        {
+          "name": "network",
+          "type": "string",
+          "description": "The name or self_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "subnetwork_project",
+          "type": "string",
+          "description": "The ID of the project in which the subnetwork belongs. If it is not provided, the provider project is used.",
+          "default": "\"\"",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "name": "self_link",
+          "description": "Self-link of instance template"
+        },
+        {
+          "name": "name",
+          "description": "Name of instance template"
+        },
+        {
+          "name": "tags",
+          "description": "Tags that will be associated with instance(s)"
+        }
+      ],
+      "dependencies": [],
+      "provider_dependencies": [
+        {
+          "name": "google",
+          "namespace": "",
+          "source": "",
+          "version": ">= 3.43, <4.0"
+        }
+      ],
+      "resources": [
+        {
+          "name": "tpl",
+          "type": "google_compute_instance_template"
+        }
+      ]
+    },
+    {
+      "path": "modules/compute_instance",
+      "name": "compute_instance",
+      "readme": "# Compute Instance\n\nThis module is used to create compute instances (and only compute instances) using\n[google_compute_instance_from_template](https://www.terraform.io/docs/providers/google/r/compute_instance_from_template.html), with no instance groups.\n\n## Usage\n\nSee the [simple](https://github.com/terraform-google-modules/terraform-google-vm/tree/master/examples/compute_instance/simple) for a usage example.\n\n## Testing\n\n\n<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n## Inputs\n\n| Name | Description | Type | Default | Required |\n|------|-------------|------|---------|:--------:|\n| access\\_config | Access configurations, i.e. IPs via which the VM instance can be accessed via the Internet. | <pre>list(object({<br>    nat_ip       = string<br>    network_tier = string<br>  }))</pre> | `[]` | no |\n| add\\_hostname\\_suffix | Adds a suffix to the hostname | `bool` | `true` | no |\n| hostname | Hostname of instances | `string` | `\"\"` | no |\n| instance\\_template | Instance template self\\_link used to create compute instances | `any` | n/a | yes |\n| network | Network to deploy to. Only one of network or subnetwork should be specified. | `string` | `\"\"` | no |\n| num\\_instances | Number of instances to create. This value is ignored if static\\_ips is provided. | `string` | `\"1\"` | no |\n| region | Region where the instances should be created. | `string` | `null` | no |\n| static\\_ips | List of static IPs for VM instances | `list(string)` | `[]` | no |\n| subnetwork | Subnet to deploy to. Only one of network or subnetwork should be specified. | `string` | `\"\"` | no |\n| subnetwork\\_project | The project that subnetwork belongs to | `string` | `\"\"` | no |\n| zone | Zone where the instances should be created. If not specified, instances will be spread across available zones in the region. | `string` | `null` | no |\n\n## Outputs\n\n| Name | Description |\n|------|-------------|\n| available\\_zones | List of available zones in region |\n| instances\\_details | List of all details for compute instances |\n| instances\\_self\\_links | List of self-links for compute instances |\n\n<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n",
+      "empty": false,
+      "inputs": [
+        {
+          "name": "subnetwork",
+          "type": "string",
+          "description": "Subnet to deploy to. Only one of network or subnetwork should be specified.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "hostname",
+          "type": "string",
+          "description": "Hostname of instances",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "static_ips",
+          "type": "list(string)",
+          "description": "List of static IPs for VM instances",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "num_instances",
+          "type": "string",
+          "description": "Number of instances to create. This value is ignored if static_ips is provided.",
+          "default": "\"1\"",
+          "required": false
+        },
+        {
+          "name": "network",
+          "type": "string",
+          "description": "Network to deploy to. Only one of network or subnetwork should be specified.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "subnetwork_project",
+          "type": "string",
+          "description": "The project that subnetwork belongs to",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "add_hostname_suffix",
+          "type": "string",
+          "description": "Adds a suffix to the hostname",
+          "default": "true",
+          "required": false
+        },
+        {
+          "name": "access_config",
+          "type": "list(object({\n    nat_ip       = string\n    network_tier = string\n  }))",
+          "description": "Access configurations, i.e. IPs via which the VM instance can be accessed via the Internet.",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "instance_template",
+          "type": "string",
+          "description": "Instance template self_link used to create compute instances",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "region",
+          "type": "string",
+          "description": "Region where the instances should be created.",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "zone",
+          "type": "string",
+          "description": "Zone where the instances should be created. If not specified, instances will be spread across available zones in the region.",
+          "default": "",
+          "required": true
+        }
+      ],
+      "outputs": [
+        {
+          "name": "instances_self_links",
+          "description": "List of self-links for compute instances"
+        },
+        {
+          "name": "instances_details",
+          "description": "List of all details for compute instances"
+        },
+        {
+          "name": "available_zones",
+          "description": "List of available zones in region"
+        }
+      ],
+      "dependencies": [],
+      "provider_dependencies": [
+        {
+          "name": "google",
+          "namespace": "",
+          "source": "",
+          "version": ">= 3.43, <4.0"
+        }
+      ],
+      "resources": [
+        {
+          "name": "compute_instance",
+          "type": "google_compute_instance_from_template"
+        }
+      ]
+    },
+    {
+      "path": "modules/preemptible_and_regular_instance_templates",
+      "name": "preemptible_and_regular_instance_templates",
+      "readme": "# preemptible_and_regular_instance_templates\n\nThis submodule allows you to create two `google_compute_instance_template`\nresources, that consist of preemptible and regular VMs.\n\n## Usage\n\nSee the [simple](../../examples/preemptible_and_regular_instance_templates/simple) for a usage example.\n\n<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n## Inputs\n\n| Name | Description | Type | Default | Required |\n|------|-------------|------|---------|:--------:|\n| access\\_config | Access configurations, i.e. IPs via which the VM instance can be accessed via the Internet. | <pre>list(object({<br>    nat_ip       = string<br>    network_tier = string<br>  }))</pre> | `[]` | no |\n| additional\\_disks | List of maps of additional disks. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#disk_name | <pre>list(object({<br>    disk_name    = string<br>    device_name  = string<br>    auto_delete  = bool<br>    boot         = bool<br>    disk_size_gb = number<br>    disk_type    = string<br>    disk_labels  = map(string)<br>  }))</pre> | `[]` | no |\n| auto\\_delete | Whether or not the boot disk should be auto-deleted | `bool` | `true` | no |\n| can\\_ip\\_forward | Enable IP forwarding, for NAT instances for example | `string` | `\"false\"` | no |\n| disk\\_size\\_gb | Boot disk size in GB | `string` | `\"100\"` | no |\n| disk\\_type | Boot disk type, can be either pd-ssd, local-ssd, or pd-standard | `string` | `\"pd-standard\"` | no |\n| labels | Labels, provided as a map | `map(string)` | `{}` | no |\n| machine\\_type | Machine type to create, e.g. n1-standard-1 | `string` | `\"n1-standard-1\"` | no |\n| metadata | Metadata, provided as a map | `map(string)` | `{}` | no |\n| name\\_prefix | Name prefix for the instance template | `string` | `\"default-it\"` | no |\n| network | The name or self\\_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks. | `string` | `\"\"` | no |\n| project\\_id | The GCP project ID | `string` | `null` | no |\n| service\\_account | Service account to attach to the instance. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#service_account. | <pre>object({<br>    email  = string<br>    scopes = set(string)<br>  })</pre> | n/a | yes |\n| source\\_image | Source disk image. If neither source\\_image nor source\\_image\\_family is specified, defaults to the latest public CentOS image. | `string` | `\"\"` | no |\n| source\\_image\\_family | Source image family. If neither source\\_image nor source\\_image\\_family is specified, defaults to the latest public CentOS image. | `string` | `\"\"` | no |\n| source\\_image\\_project | Project where the source image comes from | `string` | `\"\"` | no |\n| startup\\_script | User startup script to run when instances spin up | `string` | `\"\"` | no |\n| subnetwork | The name of the subnetwork to attach this interface to. The subnetwork must exist in the same region this instance will be created in. Either network or subnetwork must be provided. | `string` | `\"\"` | no |\n| subnetwork\\_project | The ID of the project in which the subnetwork belongs. If it is not provided, the provider project is used. | `string` | `\"\"` | no |\n| tags | Network tags, provided as a list | `list(string)` | `[]` | no |\n\n## Outputs\n\n| Name | Description |\n|------|-------------|\n| preemptible\\_name | Name of preemptible instance template |\n| preemptible\\_self\\_link | Self-link of preemptible instance template |\n| regular\\_name | Name of regular instance template |\n| regular\\_self\\_link | Self-link of regular instance template |\n\n<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n",
+      "empty": false,
+      "inputs": [
+        {
+          "name": "can_ip_forward",
+          "type": "string",
+          "description": "Enable IP forwarding, for NAT instances for example",
+          "default": "\"false\"",
+          "required": false
+        },
+        {
+          "name": "subnetwork",
+          "type": "string",
+          "description": "The name of the subnetwork to attach this interface to. The subnetwork must exist in the same region this instance will be created in. Either network or subnetwork must be provided.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "auto_delete",
+          "type": "string",
+          "description": "Whether or not the boot disk should be auto-deleted",
+          "default": "true",
+          "required": false
+        },
+        {
+          "name": "service_account",
+          "type": "object({\n    email  = string\n    scopes = set(string)\n  })",
+          "description": "Service account to attach to the instance. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#service_account.",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "access_config",
+          "type": "list(object({\n    nat_ip       = string\n    network_tier = string\n  }))",
+          "description": "Access configurations, i.e. IPs via which the VM instance can be accessed via the Internet.",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "name_prefix",
+          "type": "string",
+          "description": "Name prefix for the instance template",
+          "default": "\"default-it\"",
+          "required": false
+        },
+        {
+          "name": "disk_type",
+          "type": "string",
+          "description": "Boot disk type, can be either pd-ssd, local-ssd, or pd-standard",
+          "default": "\"pd-standard\"",
+          "required": false
+        },
+        {
+          "name": "tags",
+          "type": "list(string)",
+          "description": "Network tags, provided as a list",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "labels",
+          "type": "map(string)",
+          "description": "Labels, provided as a map",
+          "default": "{}",
+          "required": false
+        },
+        {
+          "name": "source_image",
+          "type": "string",
+          "description": "Source disk image. If neither source_image nor source_image_family is specified, defaults to the latest public CentOS image.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "source_image_family",
+          "type": "string",
+          "description": "Source image family. If neither source_image nor source_image_family is specified, defaults to the latest public CentOS image.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "source_image_project",
+          "type": "string",
+          "description": "Project where the source image comes from",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "disk_size_gb",
+          "type": "string",
+          "description": "Boot disk size in GB",
+          "default": "\"100\"",
+          "required": false
+        },
+        {
+          "name": "project_id",
+          "type": "string",
+          "description": "The GCP project ID",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "machine_type",
+          "type": "string",
+          "description": "Machine type to create, e.g. n1-standard-1",
+          "default": "\"n1-standard-1\"",
+          "required": false
+        },
+        {
+          "name": "subnetwork_project",
+          "type": "string",
+          "description": "The ID of the project in which the subnetwork belongs. If it is not provided, the provider project is used.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "additional_disks",
+          "type": "list(object({\n    disk_name    = string\n    device_name  = string\n    auto_delete  = bool\n    boot         = bool\n    disk_size_gb = number\n    disk_type    = string\n    disk_labels  = map(string)\n  }))",
+          "description": "List of maps of additional disks. See https://www.terraform.io/docs/providers/google/r/compute_instance_template.html#disk_name",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "network",
+          "type": "string",
+          "description": "The name or self_link of the network to attach this interface to. Use network attribute for Legacy or Auto subnetted networks and subnetwork for custom subnetted networks.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "startup_script",
+          "type": "string",
+          "description": "User startup script to run when instances spin up",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "metadata",
+          "type": "map(string)",
+          "description": "Metadata, provided as a map",
+          "default": "{}",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "name": "preemptible_self_link",
+          "description": "Self-link of preemptible instance template"
+        },
+        {
+          "name": "preemptible_name",
+          "description": "Name of preemptible instance template"
+        },
+        {
+          "name": "regular_self_link",
+          "description": "Self-link of regular instance template"
+        },
+        {
+          "name": "regular_name",
+          "description": "Name of regular instance template"
+        }
+      ],
+      "dependencies": [],
+      "provider_dependencies": [
+        {
+          "name": "google",
+          "namespace": "",
+          "source": "",
+          "version": ">= 3.43, <4.0"
+        },
+        {
+          "name": "google-beta",
+          "namespace": "",
+          "source": "",
+          "version": ">= 3.43, <4.0"
+        }
+      ],
+      "resources": []
+    },
+    {
+      "path": "modules/mig_with_percent",
+      "name": "mig_with_percent",
+      "readme": "# Managed Instance Group (MIG) with percent\n\nThis module allows you to set the percentage ratio of second version of instance template on Managed Instance Group.\n\n## Usage\n\nSee the [simple example](../../examples/mig_with_percent/simple) for a usage example.\n\n## Upgrading\n\nThe current version is 2.X. The following guides are available to assist with upgrades:\n\n- [1.X -> 2.0](../../docs/upgrading_to_mig_v2.0.md)\n\n<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n## Inputs\n\n| Name | Description | Type | Default | Required |\n|------|-------------|------|---------|:--------:|\n| autoscaler\\_name | Autoscaler name. When variable is empty, name will be derived from var.hostname. | `string` | `\"\"` | no |\n| autoscaling\\_cpu | Autoscaling, cpu utilization policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#cpu_utilization | `list(map(number))` | `[]` | no |\n| autoscaling\\_enabled | Creates an autoscaler for the managed instance group | `string` | `\"false\"` | no |\n| autoscaling\\_lb | Autoscaling, load balancing utilization policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#load_balancing_utilization | `list(map(number))` | `[]` | no |\n| autoscaling\\_metric | Autoscaling, metric policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#metric | <pre>list(object({<br>    name   = string<br>    target = number<br>    type   = string<br>  }))</pre> | `[]` | no |\n| autoscaling\\_scale\\_in\\_control | Autoscaling, scale-in control block. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#scale_in_control | <pre>object({<br>    fixed_replicas   = number<br>    percent_replicas = number<br>    time_window_sec  = number<br>  })</pre> | <pre>{<br>  \"fixed_replicas\": null,<br>  \"percent_replicas\": null,<br>  \"time_window_sec\": null<br>}</pre> | no |\n| cooldown\\_period | The number of seconds that the autoscaler should wait before it starts collecting information from a new instance. | `number` | `60` | no |\n| distribution\\_policy\\_zones | The distribution policy, i.e. which zone(s) should instances be create in. Default is all zones in given region. | `list(string)` | `[]` | no |\n| health\\_check | Health check to determine whether instances are responsive and able to do work | <pre>object({<br>    type                = string<br>    initial_delay_sec   = number<br>    check_interval_sec  = number<br>    healthy_threshold   = number<br>    timeout_sec         = number<br>    unhealthy_threshold = number<br>    response            = string<br>    proxy_header        = string<br>    port                = number<br>    request             = string<br>    request_path        = string<br>    host                = string<br>  })</pre> | <pre>{<br>  \"check_interval_sec\": 30,<br>  \"healthy_threshold\": 1,<br>  \"host\": \"\",<br>  \"initial_delay_sec\": 30,<br>  \"port\": 80,<br>  \"proxy_header\": \"NONE\",<br>  \"request\": \"\",<br>  \"request_path\": \"/\",<br>  \"response\": \"\",<br>  \"timeout_sec\": 10,<br>  \"type\": \"\",<br>  \"unhealthy_threshold\": 5<br>}</pre> | no |\n| health\\_check\\_name | Health check name. When variable is empty, name will be derived from var.hostname. | `string` | `\"\"` | no |\n| hostname | Hostname prefix for instances | `string` | `\"default\"` | no |\n| instance\\_template\\_initial\\_version | Instance template self\\_link used to create compute instances for the initial version | `any` | n/a | yes |\n| instance\\_template\\_next\\_version | Instance template self\\_link used to create compute instances for the second version | `any` | n/a | yes |\n| max\\_replicas | The maximum number of instances that the autoscaler can scale up to. This is required when creating or updating an autoscaler. The maximum number of replicas should not be lower than minimal number of replicas. | `number` | `10` | no |\n| mig\\_name | Managed instance group name. When variable is empty, name will be derived from var.hostname. | `string` | `\"\"` | no |\n| mig\\_timeouts | Times for creation, deleting and updating the MIG resources. Can be helpful when using wait\\_for\\_instances to allow a longer VM startup time. | <pre>object({<br>    create = string<br>    update = string<br>    delete = string<br>  })</pre> | <pre>{<br>  \"create\": \"5m\",<br>  \"delete\": \"15m\",<br>  \"update\": \"5m\"<br>}</pre> | no |\n| min\\_replicas | The minimum number of replicas that the autoscaler can scale down to. This cannot be less than 0. | `number` | `2` | no |\n| named\\_ports | Named name and named port. https://cloud.google.com/load-balancing/docs/backend-service#named_ports | <pre>list(object({<br>    name = string<br>    port = number<br>  }))</pre> | `[]` | no |\n| network | Network to deploy to. Only one of network or subnetwork should be specified. | `string` | `\"\"` | no |\n| next\\_version\\_percent | Percentage of instances defined in the second version | `any` | n/a | yes |\n| project\\_id | The GCP project ID | `string` | `null` | no |\n| region | The GCP region where the managed instance group resides. | `any` | n/a | yes |\n| stateful\\_disks | Disks created on the instances that will be preserved on instance delete. https://cloud.google.com/compute/docs/instance-groups/configuring-stateful-disks-in-migs | <pre>list(object({<br>    device_name = string<br>    delete_rule = string<br>  }))</pre> | `[]` | no |\n| subnetwork | Subnet to deploy to. Only one of network or subnetwork should be specified. | `string` | `\"\"` | no |\n| subnetwork\\_project | The project that subnetwork belongs to | `string` | `\"\"` | no |\n| target\\_pools | The target load balancing pools to assign this group to. | `list(string)` | `[]` | no |\n| target\\_size | The target number of running instances for this managed instance group. This value should always be explicitly set unless this resource is attached to an autoscaler, in which case it should never be set. | `number` | `1` | no |\n| update\\_policy | The rolling update policy. https://www.terraform.io/docs/providers/google/r/compute_region_instance_group_manager.html#rolling_update_policy | <pre>list(object({<br>    max_surge_fixed              = number<br>    instance_redistribution_type = string<br>    max_surge_percent            = number<br>    max_unavailable_fixed        = number<br>    max_unavailable_percent      = number<br>    min_ready_sec                = number<br>    replacement_method           = string<br>    minimal_action               = string<br>    type                         = string<br>  }))</pre> | `[]` | no |\n| wait\\_for\\_instances | Whether to wait for all instances to be created/updated before returning. Note that if this is set to true and the operation does not succeed, Terraform will continue trying until it times out. | `string` | `\"false\"` | no |\n\n## Outputs\n\n| Name | Description |\n|------|-------------|\n| health\\_check\\_self\\_links | All self\\_links of healthchecks created for the instance group. |\n| instance\\_group | Instance-group url of managed instance group |\n| instance\\_group\\_manager | An instance of google\\_compute\\_region\\_instance\\_group\\_manager of the instance group. |\n| self\\_link | Self-link of managed instance group |\n\n<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n",
+      "empty": false,
+      "inputs": [
+        {
+          "name": "autoscaling_lb",
+          "type": "list(map(number))",
+          "description": "Autoscaling, load balancing utilization policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#load_balancing_utilization",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "target_size",
+          "type": "string",
+          "description": "The target number of running instances for this managed instance group. This value should always be explicitly set unless this resource is attached to an autoscaler, in which case it should never be set.",
+          "default": "1",
+          "required": false
+        },
+        {
+          "name": "target_pools",
+          "type": "list(string)",
+          "description": "The target load balancing pools to assign this group to.",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "health_check_name",
+          "type": "string",
+          "description": "Health check name. When variable is empty, name will be derived from var.hostname.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "autoscaler_name",
+          "type": "string",
+          "description": "Autoscaler name. When variable is empty, name will be derived from var.hostname.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "autoscaling_metric",
+          "type": "list(object({\n    name   = string\n    target = number\n    type   = string\n  }))",
+          "description": "Autoscaling, metric policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#metric",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "network",
+          "type": "string",
+          "description": "Network to deploy to. Only one of network or subnetwork should be specified.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "region",
+          "type": "string",
+          "description": "The GCP region where the managed instance group resides.",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "instance_template_next_version",
+          "type": "string",
+          "description": "Instance template self_link used to create compute instances for the second version",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "distribution_policy_zones",
+          "type": "list(string)",
+          "description": "The distribution policy, i.e. which zone(s) should instances be create in. Default is all zones in given region.",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "stateful_disks",
+          "type": "list(object({\n    device_name = string\n    delete_rule = string\n  }))",
+          "description": "Disks created on the instances that will be preserved on instance delete. https://cloud.google.com/compute/docs/instance-groups/configuring-stateful-disks-in-migs",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "autoscaling_enabled",
+          "type": "string",
+          "description": "Creates an autoscaler for the managed instance group",
+          "default": "\"false\"",
+          "required": false
+        },
+        {
+          "name": "subnetwork",
+          "type": "string",
+          "description": "Subnet to deploy to. Only one of network or subnetwork should be specified.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "update_policy",
+          "type": "list(object({\n    max_surge_fixed              = number\n    instance_redistribution_type = string\n    max_surge_percent            = number\n    max_unavailable_fixed        = number\n    max_unavailable_percent      = number\n    min_ready_sec                = number\n    replacement_method           = string\n    minimal_action               = string\n    type                         = string\n  }))",
+          "description": "The rolling update policy. https://www.terraform.io/docs/providers/google/r/compute_region_instance_group_manager.html#rolling_update_policy",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "health_check",
+          "type": "object({\n    type                = string\n    initial_delay_sec   = number\n    check_interval_sec  = number\n    healthy_threshold   = number\n    timeout_sec         = number\n    unhealthy_threshold = number\n    response            = string\n    proxy_header        = string\n    port                = number\n    request             = string\n    request_path        = string\n    host                = string\n  })",
+          "description": "Health check to determine whether instances are responsive and able to do work",
+          "default": "{\n  \"check_interval_sec\": 30,\n  \"healthy_threshold\": 1,\n  \"host\": \"\",\n  \"initial_delay_sec\": 30,\n  \"port\": 80,\n  \"proxy_header\": \"NONE\",\n  \"request\": \"\",\n  \"request_path\": \"/\",\n  \"response\": \"\",\n  \"timeout_sec\": 10,\n  \"type\": \"\",\n  \"unhealthy_threshold\": 5\n}",
+          "required": false
+        },
+        {
+          "name": "cooldown_period",
+          "type": "string",
+          "description": "The number of seconds that the autoscaler should wait before it starts collecting information from a new instance.",
+          "default": "60",
+          "required": false
+        },
+        {
+          "name": "named_ports",
+          "type": "list(object({\n    name = string\n    port = number\n  }))",
+          "description": "Named name and named port. https://cloud.google.com/load-balancing/docs/backend-service#named_ports",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "next_version_percent",
+          "type": "string",
+          "description": "Percentage of instances defined in the second version",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "subnetwork_project",
+          "type": "string",
+          "description": "The project that subnetwork belongs to",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "instance_template_initial_version",
+          "type": "string",
+          "description": "Instance template self_link used to create compute instances for the initial version",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "max_replicas",
+          "type": "string",
+          "description": "The maximum number of instances that the autoscaler can scale up to. This is required when creating or updating an autoscaler. The maximum number of replicas should not be lower than minimal number of replicas.",
+          "default": "10",
+          "required": false
+        },
+        {
+          "name": "mig_timeouts",
+          "type": "object({\n    create = string\n    update = string\n    delete = string\n  })",
+          "description": "Times for creation, deleting and updating the MIG resources. Can be helpful when using wait_for_instances to allow a longer VM startup time. ",
+          "default": "{\n  \"create\": \"5m\",\n  \"delete\": \"15m\",\n  \"update\": \"5m\"\n}",
+          "required": false
+        },
+        {
+          "name": "project_id",
+          "type": "string",
+          "description": "The GCP project ID",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "hostname",
+          "type": "string",
+          "description": "Hostname prefix for instances",
+          "default": "\"default\"",
+          "required": false
+        },
+        {
+          "name": "mig_name",
+          "type": "string",
+          "description": "Managed instance group name. When variable is empty, name will be derived from var.hostname.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "min_replicas",
+          "type": "string",
+          "description": "The minimum number of replicas that the autoscaler can scale down to. This cannot be less than 0.",
+          "default": "2",
+          "required": false
+        },
+        {
+          "name": "autoscaling_cpu",
+          "type": "list(map(number))",
+          "description": "Autoscaling, cpu utilization policy block as single element array. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#cpu_utilization",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "autoscaling_scale_in_control",
+          "type": "object({\n    fixed_replicas   = number\n    percent_replicas = number\n    time_window_sec  = number\n  })",
+          "description": "Autoscaling, scale-in control block. https://www.terraform.io/docs/providers/google/r/compute_autoscaler.html#scale_in_control",
+          "default": "{\n  \"fixed_replicas\": null,\n  \"percent_replicas\": null,\n  \"time_window_sec\": null\n}",
+          "required": false
+        },
+        {
+          "name": "wait_for_instances",
+          "type": "string",
+          "description": "Whether to wait for all instances to be created/updated before returning. Note that if this is set to true and the operation does not succeed, Terraform will continue trying until it times out.",
+          "default": "\"false\"",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "name": "self_link",
+          "description": "Self-link of managed instance group"
+        },
+        {
+          "name": "instance_group",
+          "description": "Instance-group url of managed instance group"
+        },
+        {
+          "name": "instance_group_manager",
+          "description": "An instance of google_compute_region_instance_group_manager of the instance group."
+        },
+        {
+          "name": "health_check_self_links",
+          "description": "All self_links of healthchecks created for the instance group."
+        }
+      ],
+      "dependencies": [],
+      "provider_dependencies": [
+        {
+          "name": "google",
+          "namespace": "",
+          "source": "",
+          "version": ">= 3.43, <4.0"
+        },
+        {
+          "name": "google-beta",
+          "namespace": "",
+          "source": "",
+          "version": ">= 3.43, <4.0"
+        }
+      ],
+      "resources": [
+        {
+          "name": "mig_with_percent",
+          "type": "google_compute_region_instance_group_manager"
+        },
+        {
+          "name": "autoscaler",
+          "type": "google_compute_region_autoscaler"
+        },
+        {
+          "name": "https",
+          "type": "google_compute_health_check"
+        },
+        {
+          "name": "http",
+          "type": "google_compute_health_check"
+        },
+        {
+          "name": "tcp",
+          "type": "google_compute_health_check"
+        }
+      ]
+    },
+    {
+      "path": "modules/compute_disk_snapshot",
+      "name": "compute_disk_snapshot",
+      "readme": "# Compute Disk Snapshot\n\nThis module is used to create one resource policy for disk snapshots and attaching\npersistent disks to the created snapshot policy. This module allows you to have\nscheduled snapshots for persistent disks.\n\n## Usage\n\nSee the [disk snapshot](https://github.com/terraform-google-modules/terraform-google-vm/tree/master/examples/compute_instance/disk_snapshot) for a usage example.\n\n<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n## Inputs\n\n| Name | Description | Type | Default | Required |\n|------|-------------|------|---------|:--------:|\n| disks | List of self\\_links persistent disks to attach the snapshot policy to (ie. projects/project\\_id/disks/diskname/zones/zone\\_name) | `list(string)` | `[]` | no |\n| module\\_depends\\_on | List of modules or resources this module depends on | `list(any)` | `[]` | no |\n| name | Name of the resource policy to create | `string` | n/a | yes |\n| project | The project ID where the resources will be created | `string` | n/a | yes |\n| region | Region where resource policy resides | `string` | n/a | yes |\n| snapshot\\_properties | The properties of the schedule policy. For more details see https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_resource_policy#snapshot_properties | <pre>object(<br>    {<br>      guest_flush       = bool<br>      labels            = map(string)<br>      storage_locations = list(string)<br>    }<br>  )</pre> | `null` | no |\n| snapshot\\_retention\\_policy | The retention policy to be applied to the schedule policy. For more details see https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_resource_policy#retention_policy | <pre>object(<br>    {<br>      max_retention_days    = number<br>      on_source_disk_delete = string<br>    }<br>  )</pre> | n/a | yes |\n| snapshot\\_schedule | The scheduled to be used by the snapshot policy. For more details see https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_resource_policy#schedule | <pre>object(<br>    {<br>      daily_schedule = object(<br>        {<br>          days_in_cycle = number<br>          start_time    = string<br>        }<br>      )<br>      hourly_schedule = object(<br>        {<br>          hours_in_cycle = number<br>          start_time     = string<br>        }<br>      )<br>      weekly_schedule = object(<br>        {<br>          day_of_weeks = set(object(<br>            {<br>              day        = string<br>              start_time = string<br>            }<br>          ))<br>        }<br>      )<br>    }<br>  )</pre> | n/a | yes |\n\n## Outputs\n\n| Name | Description |\n|------|-------------|\n| attachments | Disk attachments to the resource policy |\n| policy | Resource snapshot policy details |\n\n<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n",
+      "empty": false,
+      "inputs": [
+        {
+          "name": "module_depends_on",
+          "type": "list(any)",
+          "description": "List of modules or resources this module depends on",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "description": "Name of the resource policy to create",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "project",
+          "type": "string",
+          "description": "The project ID where the resources will be created",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "region",
+          "type": "string",
+          "description": "Region where resource policy resides",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "snapshot_retention_policy",
+          "type": "object(\n    {\n      max_retention_days    = number\n      on_source_disk_delete = string\n    }\n  )",
+          "description": "The retention policy to be applied to the schedule policy. For more details see https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_resource_policy#retention_policy",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "snapshot_schedule",
+          "type": "object(\n    {\n      daily_schedule = object(\n        {\n          days_in_cycle = number\n          start_time    = string\n        }\n      )\n      hourly_schedule = object(\n        {\n          hours_in_cycle = number\n          start_time     = string\n        }\n      )\n      weekly_schedule = object(\n        {\n          day_of_weeks = set(object(\n            {\n              day        = string\n              start_time = string\n            }\n          ))\n        }\n      )\n    }\n  )",
+          "description": "The scheduled to be used by the snapshot policy. For more details see https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_resource_policy#schedule",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "snapshot_properties",
+          "type": "object(\n    {\n      guest_flush       = bool\n      labels            = map(string)\n      storage_locations = list(string)\n    }\n  )",
+          "description": "The properties of the schedule policy. For more details see https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_resource_policy#snapshot_properties",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "disks",
+          "type": "list(string)",
+          "description": "List of self_links persistent disks to attach the snapshot policy to (ie. projects/project_id/disks/diskname/zones/zone_name)",
+          "default": "[]",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "name": "policy",
+          "description": "Resource snapshot policy details"
+        },
+        {
+          "name": "attachments",
+          "description": "Disk attachments to the resource policy"
+        }
+      ],
+      "dependencies": [],
+      "provider_dependencies": [
+        {
+          "name": "google",
+          "namespace": "",
+          "source": "",
+          "version": ">= 3.43, <4.0"
+        },
+        {
+          "name": "null",
+          "namespace": "",
+          "source": "",
+          "version": ">= 2.1"
+        }
+      ],
+      "resources": [
+        {
+          "name": "module_depends_on",
+          "type": "null_resource"
+        },
+        {
+          "name": "policy",
+          "type": "google_compute_resource_policy"
+        },
+        {
+          "name": "attachment",
+          "type": "google_compute_disk_resource_policy_attachment"
+        }
+      ]
+    },
+    {
+      "path": "modules/umig",
+      "name": "umig",
+      "readme": "# Unmanaged Instance Group (UMIG)\n\nThis module is used to create compute instances using\n[google_compute_instance_from_template](https://www.terraform.io/docs/providers/google/r/compute_instance_from_template.html), and [google_compute_instance_groups](https://www.terraform.io/docs/providers/google/r/compute_instance_group.html).\n\n## Usage\n\nSee the [simple](https://github.com/terraform-google-modules/terraform-google-vm/tree/master/examples/umig/simple) for a usage example.\n\n## Testing\n\n\n<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n## Inputs\n\n| Name | Description | Type | Default | Required |\n|------|-------------|------|---------|:--------:|\n| access\\_config | Access configurations, i.e. IPs via which the VM instance can be accessed via the Internet. | <pre>list(list(object({<br>    nat_ip       = string<br>    network_tier = string<br>  })))</pre> | `[]` | no |\n| additional\\_networks | Additional network interface details for GCE, if any. | <pre>list(object({<br>    network            = string<br>    subnetwork         = string<br>    subnetwork_project = string<br>    network_ip         = string<br>    access_config = list(object({<br>      nat_ip       = string<br>      network_tier = string<br>    }))<br>  }))</pre> | `[]` | no |\n| hostname | Hostname of instances | `string` | `\"\"` | no |\n| instance\\_template | Instance template self\\_link used to create compute instances | `any` | n/a | yes |\n| named\\_ports | Named name and named port | <pre>list(object({<br>    name = string<br>    port = number<br>  }))</pre> | `[]` | no |\n| network | Network to deploy to. Only one of network or subnetwork should be specified. | `string` | `\"\"` | no |\n| num\\_instances | Number of instances to create. This value is ignored if static\\_ips is provided. | `string` | `\"1\"` | no |\n| project\\_id | The GCP project ID | `string` | `null` | no |\n| region | The GCP region where the unmanaged instance group resides. | `string` | n/a | yes |\n| static\\_ips | List of static IPs for VM instances | `list(string)` | `[]` | no |\n| subnetwork | Subnet to deploy to. Only one of network or subnetwork should be specified. | `string` | `\"\"` | no |\n| subnetwork\\_project | The project that subnetwork belongs to | `string` | `\"\"` | no |\n\n## Outputs\n\n| Name | Description |\n|------|-------------|\n| available\\_zones | List of available zones in region |\n| instances\\_details | List of all details for compute instances |\n| instances\\_self\\_links | List of self-links for compute instances |\n| self\\_links | List of self-links for unmanaged instance groups |\n| umig\\_details | List of all details for unmanaged instance groups |\n\n<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->\n",
+      "empty": false,
+      "inputs": [
+        {
+          "name": "region",
+          "type": "string",
+          "description": "The GCP region where the unmanaged instance group resides.",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "additional_networks",
+          "type": "list(object({\n    network            = string\n    subnetwork         = string\n    subnetwork_project = string\n    network_ip         = string\n    access_config = list(object({\n      nat_ip       = string\n      network_tier = string\n    }))\n  }))",
+          "description": "Additional network interface details for GCE, if any.",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "named_ports",
+          "type": "list(object({\n    name = string\n    port = number\n  }))",
+          "description": "Named name and named port",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "instance_template",
+          "type": "string",
+          "description": "Instance template self_link used to create compute instances",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "hostname",
+          "type": "string",
+          "description": "Hostname of instances",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "static_ips",
+          "type": "list(string)",
+          "description": "List of static IPs for VM instances",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "num_instances",
+          "type": "string",
+          "description": "Number of instances to create. This value is ignored if static_ips is provided.",
+          "default": "\"1\"",
+          "required": false
+        },
+        {
+          "name": "access_config",
+          "type": "list(list(object({\n    nat_ip       = string\n    network_tier = string\n  })))",
+          "description": "Access configurations, i.e. IPs via which the VM instance can be accessed via the Internet.",
+          "default": "[]",
+          "required": false
+        },
+        {
+          "name": "project_id",
+          "type": "string",
+          "description": "The GCP project ID",
+          "default": "",
+          "required": true
+        },
+        {
+          "name": "network",
+          "type": "string",
+          "description": "Network to deploy to. Only one of network or subnetwork should be specified.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "subnetwork",
+          "type": "string",
+          "description": "Subnet to deploy to. Only one of network or subnetwork should be specified.",
+          "default": "\"\"",
+          "required": false
+        },
+        {
+          "name": "subnetwork_project",
+          "type": "string",
+          "description": "The project that subnetwork belongs to",
+          "default": "\"\"",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "name": "instances_self_links",
+          "description": "List of self-links for compute instances"
+        },
+        {
+          "name": "instances_details",
+          "description": "List of all details for compute instances"
+        },
+        {
+          "name": "available_zones",
+          "description": "List of available zones in region"
+        },
+        {
+          "name": "self_links",
+          "description": "List of self-links for unmanaged instance groups"
+        },
+        {
+          "name": "umig_details",
+          "description": "List of all details for unmanaged instance groups"
+        }
+      ],
+      "dependencies": [],
+      "provider_dependencies": [
+        {
+          "name": "google",
+          "namespace": "",
+          "source": "",
+          "version": ">= 3.43, <4.0"
+        }
+      ],
+      "resources": [
+        {
+          "name": "compute_instance",
+          "type": "google_compute_instance_from_template"
+        },
+        {
+          "name": "instance_group",
+          "type": "google_compute_instance_group"
+        }
+      ]
+    }
+  ],
+  "examples": [],
+  "providers": [
+    "google"
+  ],
+  "versions": [
+    "0.1.0",
+    "0.2.0",
+    "1.0.0",
+    "1.1.0",
+    "1.1.1",
+    "1.2.0",
+    "1.3.0",
+    "1.4.0",
+    "1.4.1",
+    "2.0.0",
+    "2.1.0",
+    "3.0.0",
+    "4.0.0",
+    "5.0.0",
+    "5.1.0",
+    "6.0.0",
+    "6.1.0",
+    "6.2.0",
+    "6.3.0",
+    "6.4.0",
+    "6.5.0",
+    "6.6.0",
+    "7.0.0",
+    "7.1.0",
+    "7.2.0"
+  ]
+}

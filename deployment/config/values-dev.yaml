@@ -1,0 +1,49 @@
+# Default values for frontend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  paths:
+    - /
+  hosts:
+    - sailordev.bootlabstech.com
+  tls:
+    - secretName: kratosdev-bootlabstech-com-tls
+      hosts:
+        - sailordev.bootlabstech.com
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+podEnv:
+  - name: NEXT_PUBLIC_KRATOS_PUBLIC_API
+    value: "https://kratosdev.bootlabstech.com/"
+  - name: BACKEND_API
+    value: "https://sailordev.bootlabstech.com"
+  - name: NEXT_PRIVATE_KRATOS_IDENTITY_API
+    value: "http://kratos-admin/"

@@ -1,0 +1,106 @@
+{
+  "id": "e29d9815-b74d-4c33-8634-64cc88dc262d",
+  "type": "browser",
+  "expires_at": "2021-08-16T07:05:42.148529Z",
+  "issued_at": "2021-08-16T06:05:42.148529Z",
+  "request_url": "http://kratosdev.bootlabstech.com/self-service/login/browser",
+  "ui": {
+    "action": "https://kratosdev.bootlabstech.com/self-service/login?flow=e29d9815-b74d-4c33-8634-64cc88dc262d",
+    "method": "POST",
+    "nodes": [
+      {
+        "type": "input",
+        "group": "default",
+        "attributes": {
+          "name": "csrf_token",
+          "type": "hidden",
+          "value": "PUxhRVcmQdulbsMs3CCSZSEPQ1y1ymqRfIaTMaOWf2l4IfNCFt38e/w6Ml/TaiB2bbEUu6cn9wTdlCd/HXjzqA==",
+          "required": true,
+          "disabled": false
+        },
+        "messages": [],
+        "meta": {}
+      },
+      {
+        "type": "input",
+        "group": "oidc",
+        "attributes": {
+          "name": "provider",
+          "type": "submit",
+          "value": "google",
+          "disabled": false
+        },
+        "messages": [],
+        "meta": {
+          "label": {
+            "id": 1010002,
+            "text": "Sign in with google",
+            "type": "info",
+            "context": {
+              "provider": "google"
+            }
+          }
+        }
+      },
+      {
+        "type": "input",
+        "group": "password",
+        "attributes": {
+          "name": "password_identifier",
+          "type": "text",
+          "value": "",
+          "required": true,
+          "disabled": false
+        },
+        "messages": [],
+        "meta": {
+          "label": {
+            "id": 1070004,
+            "text": "ID",
+            "type": "info"
+          }
+        }
+      },
+      {
+        "type": "input",
+        "group": "password",
+        "attributes": {
+          "name": "password",
+          "type": "password",
+          "required": true,
+          "disabled": false
+        },
+        "messages": [],
+        "meta": {
+          "label": {
+            "id": 1070001,
+            "text": "Password",
+            "type": "info"
+          }
+        }
+      },
+      {
+        "type": "input",
+        "group": "password",
+        "attributes": {
+          "name": "method",
+          "type": "submit",
+          "value": "password",
+          "disabled": false
+        },
+        "messages": [],
+        "meta": {
+          "label": {
+            "id": 1010001,
+            "text": "Sign in",
+            "type": "info",
+            "context": {}
+          }
+        }
+      }
+    ]
+  },
+  "created_at": "2021-08-16T06:05:42.151013Z",
+  "updated_at": "2021-08-16T06:05:42.151013Z",
+  "forced": false
+}
